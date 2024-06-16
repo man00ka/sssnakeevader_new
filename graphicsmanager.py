@@ -23,8 +23,6 @@ def load_image(file_name: str, convert: bool=True):
     # have to be done for every blit which would add up for assets that
     # have to be drawn many times. So this should stay enabled:
     if convert:
-        print(f"image type: {type(image)}")
         image = image.convert()
-        print("Image converted", f"type: {type(image)}")
 
     return image

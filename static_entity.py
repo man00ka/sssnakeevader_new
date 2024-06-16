@@ -28,8 +28,6 @@ class StaticEntity(Sprite):
 class BackgroundTile(StaticEntity):
     def __init__(self, *args, **kwargs):
         super(BackgroundTile, self).__init__(*args, **kwargs)
-        print(f"image type: {type(self.image)}")
-
         self.vel_x = c.SPEED_BACKGROUND
 
     def update_position(self):
