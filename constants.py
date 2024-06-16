@@ -1,5 +1,6 @@
 # SCALING AND FPS
 import pygame_menu
+from os.path import join
 
 FULL_SCALE = 0
 SCALE = 1
@@ -70,6 +71,10 @@ STARTING_STATE = GAME_STATES[0]
     # MEDIUM_TILE_SIZE = ...
     # LARGE_TILE_SIZE = ...
 
+# VELOCITY INFORMATION
+SPEED_BACKGROUND = 1
+SPEED_INCREMENT = 0.25
+
 # MENU INFORMATION
 MENU_FONT = pygame_menu.font.FONT_8BIT
 MENU_THEME = pygame_menu.themes.THEME_SOLARIZED.copy()
@@ -82,9 +87,7 @@ MENU_SIZE = (MENU_WIDTH, MENU_HEIGHT)
 
 # DIRECTORY INFORMATION
 DIR_FONTS = "fonts"
-DIR_IMG = "img"  # Image directory needs to be named 'img' to do the web build
+DIR_IMG = "img"  # Image directory needs to stay named 'img' to do the web build
 DIR_MUSIC = "music"
 DIR_SOUNDS = "sounds"
-
-
 

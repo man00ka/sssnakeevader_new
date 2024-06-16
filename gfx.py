@@ -13,6 +13,16 @@ class GFX():
             self.layer_2,
             self.layer_3,
         ]
+        self.layers_dict = {
+            "Background": self.layer_0,
+            "Enemies": self.layer_1,
+            "Player": self.layer_2,
+            "HUD": self.layer_3,
+        }
+
+    def add_to_layer(self, layer_name: str, sprites: "Sprite or List of Sprites"):
+        layer = self.layers_dict[layer_name]
+        layer.add(sprites)
 
     def update(self):
         for layer in self.layers:
@@ -21,6 +31,4 @@ class GFX():
     def render(self, display):
         for layer in self. layers:
             layer.draw(display)
-        display.flip()
-        # TODO: here is still something missing to put everything
-        # on the screen.
+        pygame.display.flip()

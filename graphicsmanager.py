@@ -10,8 +10,8 @@ class GraphicsManager:
     passed to the game logic.
     """
     def __init__(self):
-        self.player = load_image("dog.png")
-        self.player_image = load_image("snake.png")
+        self.player_image = load_image("dog.png")
+        self.enemy_image = load_image("snake.png")
         self.grass_tile_image = load_image("grass_3_small.png")
 
 
@@ -23,6 +23,8 @@ def load_image(file_name: str, convert: bool=True):
     # have to be done for every blit which would add up for assets that
     # have to be drawn many times. So this should stay enabled:
     if convert:
+        print(f"image type: {type(image)}")
         image = image.convert()
+        print("Image converted", f"type: {type(image)}")
 
     return image
