@@ -72,8 +72,8 @@ STARTING_STATE = GAME_STATES[0]
     # LARGE_TILE_SIZE = ...
 
 # VELOCITY INFORMATION
-SPEED_BACKGROUND = 1
-SPEED_INCREMENT = 0.25
+SPEED_BACKGROUND = -1  # Because we move from right to left, we need a negative value
+SPEED_INCREMENT = -0.25
 
 # MENU INFORMATION
 MENU_FONT = pygame_menu.font.FONT_8BIT
