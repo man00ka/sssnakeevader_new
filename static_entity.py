@@ -20,7 +20,7 @@ class StaticEntity(Sprite):
 
     def update_position(self):
         self.pos_x += self.vel_x
-        self.rect.x = int(self.pos_x)
+        self.rect.x = int(self.pos_x)  # Explicitly cast to int to enable pixel perfect movement
         self.pos_y += self.vel_y
         self.rect.y = int(self.pos_y)
 
@@ -32,5 +32,12 @@ class BackgroundTile(StaticEntity):
 
         self.vel_x = c.SPEED_BACKGROUND
 
-        # TODO: make the tiles move. Include speedfactor from constants.
-        #  Do this in a seperate part of the code!
+    def update_position(self):
+        self.pos_x += self.vel_x
+        self.rect.x = int(self.pos_x)  # Explicitly cast to int to enable pixel perfect movement
+        self.pos_y += self.vel_y
+        self.rect.y = int(self.pos_y)
+
+        # Check if tile has left the screen and move it if so.
+        if self.rect.right < 0:
+            self.pos_x = c.DISPLAY_WIDTH
