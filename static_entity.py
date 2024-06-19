@@ -31,10 +31,7 @@ class BackgroundTile(StaticEntity):
         self.vel_x = c.SPEED_BACKGROUND
 
     def update_position(self):
-        self.pos_x += self.vel_x
-        self.rect.x = int(self.pos_x)  # Explicitly cast to int to enable pixel perfect movement
-        self.pos_y += self.vel_y
-        self.rect.y = int(self.pos_y)
+        super().update_position()
 
         # Check if tile has left the screen and move it if so.
         if self.rect.right < 0:

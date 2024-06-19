@@ -2,7 +2,7 @@ import numpy as np
 import constants as c
 from game_state import GameState
 from static_entity import StaticEntity, BackgroundTile
-from dynamic_entity import DynamicEntity
+from dynamic_entity import DynamicEntity, Player
 from itertools import product
 from typing import TYPE_CHECKING
 
@@ -25,6 +25,7 @@ class PlayGameState(GameState):
         self.name = c.STATE_PLAY
         self.speed_factor = 1.0
         self._init_background()
+        self._init_player()
 
     @staticmethod
     def get_instance(graphics_manager):
@@ -56,8 +57,9 @@ class PlayGameState(GameState):
         self.gfx.add_to_layer(layer_name="Background", sprites=bg_tiles)
 
     def _init_player(self):
-        pass
-
+        player_image = self.graphics_manager.player_image
+        player = Player(image=player_image, pos_x=0, pos_y=c.DISPLAY_HEIGHT_CENTER)
+        self.gfx.add_to_layer(layer_name="Player", sprites=player)
 
 def _get_num_bg_tiles(tile_size: tuple[int, int]):
     """Returns a tuple of the number of tiles in x and y
