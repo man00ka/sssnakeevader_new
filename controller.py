@@ -6,8 +6,8 @@ class Controller():
         self.graphics_manager = graphics_manager  # Rename to assets_manager?
         self.clock = clock
         self.game_states = game_states
-        self.current_state = self.game_states[starting_state](graphics_manager)
-        self.event_handler = EventHandler()
+        self.current_state = self.game_states[starting_state](self)
+        self.event_handler = EventHandler(self)
 
     def run_game(self):
         while True:
@@ -15,7 +15,7 @@ class Controller():
             self.clock.tick(c.FPS)
 
             # Handle Events
-            self.event_handler.handle_events(self)
+            self.event_handler.handle_events()
 
 
 

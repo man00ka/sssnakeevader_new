@@ -1,8 +1,8 @@
 import pygame
 import constants as c
 from main_menu import MainMenu
-from splash_screen import SplashScreen
-from playgamestate import PlayGameState
+from game_state_splash_screen import SplashScreen
+from game_state_play import PlayGameState
 from controller import Controller
 from graphicsmanager import GraphicsManager
 

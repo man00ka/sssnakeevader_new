@@ -28,9 +28,26 @@ class Player(DynamicEntity):
         super(Player, self).__init__(*args, **kwargs)
 
     def update_position(self):
-        super().update_position()
+        super().update_position()  # Updates movement introduced by velocity vectors
+        self._keep_player_on_screen()
 
-        # Keep player inside display boundaries
+    def go_up(self):
+        self.pos_y += 1
+        self.rect.y += 1
+
+    def go_left(self):
+        self.pos_x -= 1
+        self.rect.x -= 1
+
+    def go_down(self):
+        self.pos_y -= 1
+        self.rect.y -= 1
+
+    def go_right(self):
+        self.pos_x += 1
+        self.rect.x += 1
+
+    def _keep_player_on_screen(self):
         if self.pos_x < 0:
             self.pos_x = 0
             self.rect.x = 0

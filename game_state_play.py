@@ -13,8 +13,6 @@ if True:
     from dynamic_entity import DynamicEntity
 
 class PlayGameState(GameState):
-    # TODO: Maybe rename all GameStates that way and move them \
-    #  into game_states.py?
     instance = None
 
     def __init__(self, *args, **kwargs):
@@ -24,19 +22,21 @@ class PlayGameState(GameState):
         # elapsed).
         self.name = c.STATE_PLAY
         self.speed_factor = 1.0
+        self.player = None
+        self.background = None
+        self.enemies = None  # Will be a sprite group
         self._init_background()
         self._init_player()
 
+
     @staticmethod
-    def get_instance(graphics_manager):
+    def get_instance(*args, **kwargs):
         if not PlayGameState.instance:
-            PlayGameState.instance = PlayGameState(graphics_manager)
+            PlayGameState.instance = PlayGameState(*args, **kwargs)
         return PlayGameState.instance
 
     def _init_background(self):
-        # TODO: Implementieren, dass sprites links vom bild wieder\
-        #  rechts eingefügt werden
-        bg_tile_image = self.graphics_manager.grass_tile_image
+        bg_tile_image = self.controller.graphics_manager.grass_tile_image
         num_bg_tiles_x, num_bg_tiles_y = _get_num_bg_tiles(bg_tile_image.get_size())
 
         # First create the coordinates for the tiles by creating a linear spaced array
@@ -57,9 +57,43 @@ class PlayGameState(GameState):
         self.gfx.add_to_layer(layer_name="Background", sprites=bg_tiles)
 
     def _init_player(self):
-        player_image = self.graphics_manager.player_image
-        player = Player(image=player_image, pos_x=0, pos_y=c.DISPLAY_HEIGHT_CENTER)
-        self.gfx.add_to_layer(layer_name="Player", sprites=player)
+        player_image = self.controller.graphics_manager.player_image
+        self.player = Player(image=player_image, pos_x=0, pos_y=c.DISPLAY_HEIGHT_CENTER)
+        print(f"player type: {type(self.player)}")
+        self.gfx.add_to_layer(layer_name="Player", sprites=self.player)
+
+    def _init_enemies(self):
+        pass
+
+    def on_key_press_W(self):
+         self.player.go_up()
+
+    def on_key_press_A(self):
+        self.player.go_left()
+
+    def on_key_press_S(self):
+        self.player.go_down()
+
+    def on_key_press_D(self):
+        self.player.go_right()
+
+    def on_key_press_P(self):
+        self._swith_to_game_state_pause()
+
+    def on_key_press_ESCAPE(self):
+        pass
+
+    def on_key_press_RETURN(self):
+        # Nothing
+        pass
+
+    def on_key_press_SPACE(self):
+        # Player attack
+        pass
+
+    def _swith_to_game_state_pause(self):
+        # TODO: Switch current game state to Pause
+        pass
 
 def _get_num_bg_tiles(tile_size: tuple[int, int]):
     """Returns a tuple of the number of tiles in x and y
