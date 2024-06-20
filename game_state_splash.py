@@ -5,26 +5,25 @@ import constants as c
 import ultracolors as uc
 
 
-class SplashScreen(GameState):
+class GameStateSplash(GameState):
     instance = None
     def __init__(self, *args, **kwargs):
-        super(SplashScreen, self).__init__(*args, **kwargs)
+        super(GameStateSplash, self).__init__(*args, **kwargs)
         self._add_background_layer(uc.DARK_GREY)
         self._add_text_layer("sssnake evader")
         self.name = c.STATE_SPLASH_SCREEN
 
     @staticmethod
     def get_instance(*args, **kwargs):
-        if not SplashScreen.instance:
-            SplashScreen.instance = SplashScreen(*args, **kwargs)
-        return SplashScreen.instance
+        if not GameStateSplash.instance:
+            GameStateSplash.instance = GameStateSplash(*args, **kwargs)
+        return GameStateSplash.instance
 
     def _add_background_layer(self, color: tuple[int, int, int]) -> None:
         background = Sprite()
-        # Every sprite we add to a sprite group needs to have an `image` and
-        # a rect property defined in order to be automatically drawn when
-        # calling `.draw()` on the sprite group. Although the image is just
-        # a colored Surface in this case:
+        # In order for our sprite to work with our layers (sprite groups) it needs
+        # to implement an `image` and a `rect` property. So we can call `.draw()`
+        # on the sprite group.
         background.image = pygame.Surface(size=c.DISPLAY_SIZE)
         background.image.fill(color)
         background.rect = background.image.get_rect()
@@ -40,8 +39,8 @@ class SplashScreen(GameState):
         self.gfx.add_to_layer("HUD", text_sprite)
 
     def _create_text_surface(self, text: str) -> pygame.Surface:
-        # font = pygame.font.Font("fonts/press-start-2p-font/PressStart2P-vaV7.ttf", 30)
-        font = pygame.font.SysFont("Courier", 30)  # Alternative font
+        font = pygame.font.Font("fonts/press-start-2p-font/PressStart2P-vaV7.ttf", 30)
+        # font = pygame.font.SysFont("Courier", 30)  # Alternative font
         text_surf = font.render(
             text,
             0,  # no antialiasing for 8-bit

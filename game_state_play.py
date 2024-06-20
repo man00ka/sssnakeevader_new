@@ -12,11 +12,11 @@ if True:
     from static_entity import StaticEntity
     from dynamic_entity import DynamicEntity
 
-class PlayGameState(GameState):
+class GameStatePlay(GameState):
     instance = None
 
     def __init__(self, *args, **kwargs):
-        super(PlayGameState, self).__init__(*args, **kwargs)
+        super(GameStatePlay, self).__init__(*args, **kwargs)
         # The speed factor gets higher by c.SPEED_INCREMENT \
         # when certain events occur (e.g. a certain time has \
         # elapsed).
@@ -31,9 +31,9 @@ class PlayGameState(GameState):
 
     @staticmethod
     def get_instance(*args, **kwargs):
-        if not PlayGameState.instance:
-            PlayGameState.instance = PlayGameState(*args, **kwargs)
-        return PlayGameState.instance
+        if not GameStatePlay.instance:
+            GameStatePlay.instance = GameStatePlay(*args, **kwargs)
+        return GameStatePlay.instance
 
     def _init_background(self):
         bg_tile_image = self.controller.graphics_manager.grass_tile_image
@@ -81,7 +81,7 @@ class PlayGameState(GameState):
         self._swith_to_game_state_pause()
 
     def on_key_press_ESCAPE(self):
-        pass
+        self._swith_to_game_state_pause()
 
     def on_key_press_RETURN(self):
         # Nothing
@@ -93,7 +93,7 @@ class PlayGameState(GameState):
 
     def _swith_to_game_state_pause(self):
         # TODO: Switch current game state to Pause
-        self.controller.current_state = (self.controller.game_states[c.STATE_SPLASH_SCREEN]
+        self.controller.current_state = (self.controller.game_states[c.STATE_PAUSE]
                                          .get_instance(self.controller))
 
 
