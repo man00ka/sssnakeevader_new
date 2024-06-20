@@ -38,7 +38,7 @@ class EventHandler():
             self.check_keyboard_event(event)
 
     def check_quit_event(self, event):
-        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+        if event.type == QUIT:
             pygame.quit()
             quit()  # I don't know why wie need this here.
 
