@@ -5,15 +5,19 @@ from os.path import join
 
 
 class StaticEntity(Sprite):
-    def __init__(self, image=pygame.Surface((32, 32)), pos_x: int = 0, pos_y: int = 0):
+    def __init__(self, image=pygame.Surface((32, 32)),
+                 pos_x: int = 0,
+                 pos_y: int = 0,
+                 vel_x: int = 0,
+                 vel_y: int = 0):
         super(StaticEntity, self).__init__()
         self.image = image  # Pixel conversion is done by the GraphicsManager
         self.rect = self.image.get_rect(left=pos_x, top=pos_y)
         self.pos_x = pos_x
         self.pos_y = pos_y
         # for later use with velocity vectors:
-        self.vel_x = 0.0
-        self.vel_y = 0.0
+        self.vel_x = vel_x
+        self.vel_y = vel_y
 
     def update(self, *args, **kwargs):
         self.update_position()

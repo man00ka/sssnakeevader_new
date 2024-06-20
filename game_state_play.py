@@ -2,15 +2,9 @@ import numpy as np
 import constants as c
 from game_state import GameState
 from static_entity import StaticEntity, BackgroundTile
-from dynamic_entity import DynamicEntity, Player
+from dynamic_entity import DynamicEntity, Player, Enemy
 from itertools import product
-from typing import TYPE_CHECKING
-
-if True:
-    # For static type checking by e.g. mypy.
-    from graphicsmanager import GraphicsManager
-    from static_entity import StaticEntity
-    from dynamic_entity import DynamicEntity
+from random import randint
 
 class GameStatePlay(GameState):
     instance = None
@@ -21,13 +15,18 @@ class GameStatePlay(GameState):
         # when certain events occur (e.g. a certain time has \
         # elapsed).
         self.name = c.STATE_PLAY
-        self.speed_factor = 1.0
+        self.speed_factor = c.INITIAL_SPEED_FACTOR
         self.player = None
         self.background = None
         self.enemies = None  # Will be a sprite group
+        self.num_enemies = None
         self._init_background()
         self._init_player()
+        self._init_enemies()
 
+    def update(self):
+        self._update_enemies()
+        super().update()
 
     @staticmethod
     def get_instance(*args, **kwargs):
@@ -59,10 +58,22 @@ class GameStatePlay(GameState):
     def _init_player(self):
         player_image = self.controller.graphics_manager.player_image
         self.player = Player(image=player_image, pos_x=0, pos_y=c.DISPLAY_HEIGHT_CENTER)
-        print(f"player type: {type(self.player)}")
         self.gfx.add_to_layer(layer_name="Player", sprites=self.player)
 
     def _init_enemies(self):
+        enemy_image = self.controller.graphics_manager.enemy_image
+        self.num_enemies = 4
+        self.enemies = [Enemy(enemy_image,
+                              speed_factor=self.speed_factor)
+                        for _ in range(0, self.num_enemies)]
+        for sprite in self.enemies:
+            print(f"pos_x: {sprite.pos_x}")
+            print(f"pos_y: {sprite.pos_y}")
+            print(f"vel_x: {sprite.vel_x}")
+            print(f"vel_y: {sprite.vel_y}")
+        self.gfx.add_to_layer("Enemies", self.enemies)
+
+    def _update_enemies(self):
         pass
 
     def on_key_press_W(self):
