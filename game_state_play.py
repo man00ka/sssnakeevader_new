@@ -93,7 +93,9 @@ class PlayGameState(GameState):
 
     def _swith_to_game_state_pause(self):
         # TODO: Switch current game state to Pause
-        pass
+        self.controller.current_state = (self.controller.game_states[c.STATE_SPLASH_SCREEN]
+                                         .get_instance(self.controller))
+
 
 def _get_num_bg_tiles(tile_size: tuple[int, int]):
     """Returns a tuple of the number of tiles in x and y
