@@ -32,20 +32,21 @@ class Player(DynamicEntity):
         self._keep_player_on_screen()
 
     def go_up(self):
-        self.pos_y += 1
-        self.rect.y += 1
+        # self.pos_y -= 5
+        self.rect.move_ip(0, -5)
+        self.pos_y = self.rect.y
 
     def go_left(self):
-        self.pos_x -= 1
-        self.rect.x -= 1
+        self.pos_x -= 5
+        self.rect.x -= 5
 
     def go_down(self):
-        self.pos_y -= 1
-        self.rect.y -= 1
+        self.pos_y += 5
+        self.rect.y += 5
 
     def go_right(self):
-        self.pos_x += 1
-        self.rect.x += 1
+        self.pos_x += 5
+        self.rect.x += 5
 
     def _keep_player_on_screen(self):
         if self.pos_x < 0:

@@ -21,26 +21,33 @@ class EventHandler():
         self.controller = controller
 
     def handle_events(self):
+        pressed_keys = pygame.key.get_pressed()
+        self.check_player_movement(pressed_keys)
+
+        # The following events are only triggered once per key press
         for event in pygame.event.get():
             self.check_quit_event(event)
             self.check_keyboard_event(event)
-            self.check_joystick_event(event)
+            # self.check_joystick_event(pressed_keys)
+
 
     def check_quit_event(self, event):
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
             pygame.quit()
             quit()  # I don't know why wie need this here.
 
+    def check_player_movement(self, pressed_keys):
+        if pressed_keys[K_w]:
+            self.controller.current_state.on_key_press_W()
+        if pressed_keys[K_a]:
+            self.controller.current_state.on_key_press_A()
+        if pressed_keys[K_s]:
+            self.controller.current_state.on_key_press_S()
+        if pressed_keys[K_d]:
+            self.controller.current_state.on_key_press_D()
+
     def check_keyboard_event(self, event):
         if event.type == KEYDOWN:
-            if event.key == K_w:
-                self.controller.current_state.on_key_press_W()
-            if event.key == K_a:
-                self.controller.current_state.on_key_press_A()
-            if event.key == K_s:
-                self.controller.current_state.on_key_press_S()
-            if event.key == K_d:
-                self.controller.current_state.on_key_press_D()
             if event.key == K_p:
                 self.controller.current_state.on_key_press_P()
             if event.key == K_ESCAPE:
@@ -52,3 +59,4 @@ class EventHandler():
 
     def check_joystick_event(self, event):
         pass
+
