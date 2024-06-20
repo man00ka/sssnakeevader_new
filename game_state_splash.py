@@ -68,8 +68,8 @@ class SplashScreen(GameState):
         self._switch_to_game_state_play()
 
     def on_key_press_ESCAPE(self):
-        # Nothing
-        pass
+        pygame.quit()
+        quit()
 
     def on_key_press_SPACE(self):
         self._switch_to_game_state_play()

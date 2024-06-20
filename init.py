@@ -1,8 +1,9 @@
 import pygame
 import constants as c
 from main_menu import MainMenu
-from game_state_splash_screen import SplashScreen
-from game_state_play import PlayGameState
+from game_state_splash import GameStateSplash
+from game_state_play import GameStatePlay
+from game_state_pause import GameStatePause
 from controller import Controller
 from graphicsmanager import GraphicsManager
 
@@ -24,9 +25,10 @@ def get_clock():
 def get_game_states():
     # This dict will contain all the different game states
     game_states = {
-        c.STATE_SPLASH_SCREEN: SplashScreen,
+        c.STATE_SPLASH_SCREEN: GameStateSplash,
         c.STATE_MAIN_MENU: MainMenu,
-        c.STATE_PLAY: PlayGameState,
+        c.STATE_PLAY: GameStatePlay,
+        c.STATE_PAUSE: GameStatePause
     }
     return game_states
 
