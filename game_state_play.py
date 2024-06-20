@@ -89,10 +89,10 @@ class GameStatePlay(GameState):
         self.player.go_right()
 
     def on_key_press_P(self):
-        self._swith_to_game_state_pause()
+        self._switch_to_game_state_pause()
 
     def on_key_press_ESCAPE(self):
-        self._swith_to_game_state_pause()
+        self._switch_to_game_state_pause()
 
     def on_key_press_RETURN(self):
         # Nothing
@@ -102,7 +102,7 @@ class GameStatePlay(GameState):
         # Player attack
         pass
 
-    def _swith_to_game_state_pause(self):
+    def _switch_to_game_state_pause(self):
         # TODO: Switch current game state to Pause
         self.controller.current_state = (self.controller.game_states[c.STATE_PAUSE]
                                          .get_instance(self.controller))
