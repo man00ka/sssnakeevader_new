@@ -21,15 +21,21 @@ class EventHandler():
         self.controller = controller
 
     def handle_events(self):
+        # The pressed keys contain the currently held down keys
+        # which is necessary for continues movement of the player
+        # character. If we used a key *event* for that, the player
+        # character would move only once per button press. For menus,
+        # however, this is a desired behaviour, so wie evaluate *only*
+        # the keys for player movement and leave the key event logic
+        # for menu navigation, play, pause, quit game, etc.
         pressed_keys = pygame.key.get_pressed()
         self.check_player_movement(pressed_keys)
+        # self.check_joystick_event(pressed_keys)
 
-        # The following events are only triggered once per key press
+        # The following evaluations happen only once per key press
         for event in pygame.event.get():
             self.check_quit_event(event)
             self.check_keyboard_event(event)
-            # self.check_joystick_event(pressed_keys)
-
 
     def check_quit_event(self, event):
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
