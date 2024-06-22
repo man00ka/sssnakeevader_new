@@ -1,11 +1,17 @@
 import numpy as np
+from itertools import product
+
 import constants as c
 from game_state import GameState
 from static_entity import StaticEntity, BackgroundTile
 from dynamic_entity import DynamicEntity, Player, Enemy
-from itertools import product
-from random import randint
+from game_time import GameTime
+from dificulty_manager import DifficultyManager
 
+
+# TODO:
+#  - Fix game time still counting during PAUSE
+#  - Find a way to update back ground tile speed
 class GameStatePlay(GameState):
     instance = None
 
@@ -16,23 +22,44 @@ class GameStatePlay(GameState):
         # elapsed).
         self.name = c.STATE_PLAY
         self.speed_factor = c.INITIAL_SPEED_FACTOR
-        self.player = None
+        self.num_enemies = c.INITIAL_NUM_ENEMIES
+        self._num_speed_increases = 0
+        self.ingame_time = None
+        self.difficulty_manager = DifficultyManager(self)  # Needs the game state to modify the speed_factor
+
         self.background = None
-        self.enemies = None  # Will be a sprite group
-        self.num_enemies = None
+        self.player = None
+        self.enemies = None
+        self.HUD = None
+
         self._init_background()
         self._init_player()
-        self._init_enemies()
-
-    def update(self):
-        self._update_enemies()
-        super().update()
+        self._init_enemies(self.num_enemies)
+        self._init_HUD()
 
     @staticmethod
     def get_instance(*args, **kwargs):
         if not GameStatePlay.instance:
             GameStatePlay.instance = GameStatePlay(*args, **kwargs)
         return GameStatePlay.instance
+
+    def update(self):
+        self._update_ingame_clock()
+        self._update_enemies()
+        self._update_HUD()
+        super().update()  # This will update the background tiles
+
+    def _update_player(self):
+        pass
+
+    def _update_enemies(self):
+        # Enemies kill themselves if they go off-screen. However,
+        # we need to "refill" the enemies to `self.num_enemies`
+        while len(self.enemies) < self.num_enemies:
+            Enemy(speed_factor=self.speed_factor)
+
+    def _update_HUD(self):
+        self.ingame_time.update()
 
     def _init_background(self):
         bg_tile_image = self.controller.graphics_manager.grass_tile_image
@@ -60,21 +87,23 @@ class GameStatePlay(GameState):
         self.player = Player(image=player_image, pos_x=0, pos_y=c.DISPLAY_HEIGHT_CENTER)
         self.gfx.add_to_layer(layer_name="Player", sprites=self.player)
 
-    def _init_enemies(self):
+    def _init_enemies(self, num_enemies: int):
         enemy_image = self.controller.graphics_manager.enemy_image
-        self.num_enemies = 4
         self.enemies = [Enemy(enemy_image,
                               speed_factor=self.speed_factor)
-                        for _ in range(0, self.num_enemies)]
-        for sprite in self.enemies:
-            print(f"pos_x: {sprite.pos_x}")
-            print(f"pos_y: {sprite.pos_y}")
-            print(f"vel_x: {sprite.vel_x}")
-            print(f"vel_y: {sprite.vel_y}")
+                        for _ in range(0, num_enemies)]
         self.gfx.add_to_layer("Enemies", self.enemies)
 
-    def _update_enemies(self):
-        pass
+    def _init_HUD(self):
+        # The y position is dynamically corrected by GameTime itself to accommodate
+        # for font type and font size etc.
+        self.ingame_time = GameTime(pos_x=c.DISPLAY_WIDTH_CENTER, pos_y=c.DISPLAY_TOP)
+
+        # Since GameTime inherits from pygame.Sprite and defines a .surf and
+        # .rect property, we can just add it to our HUD layer.
+        self.gfx.add_to_layer("HUD", self.ingame_time)
+
+        # TODO: Add health bar
 
     def on_key_press_W(self):
          self.player.go_up()
@@ -107,6 +136,8 @@ class GameStatePlay(GameState):
         self.controller.current_state = (self.controller.game_states[c.STATE_PAUSE]
                                          .get_instance(self.controller))
 
+    def _update_ingame_clock(self):
+        self.ingame_time.update()
 
 def _get_num_bg_tiles(tile_size: tuple[int, int]):
     """Returns a tuple of the number of tiles in x and y
