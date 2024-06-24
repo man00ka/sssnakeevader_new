@@ -1,6 +1,8 @@
 # SCALING AND FPS
+import pygame
 import pygame_menu
-from os.path import join
+
+pygame.font.init()
 
 FULL_SCALE = 0
 SCALE = 1
@@ -74,8 +76,21 @@ STARTING_STATE = GAME_STATES[0]
 # VELOCITY INFORMATION
 SPEED_BACKGROUND = -1  # Because we move from right to left, we need a negative value
 SPEED_INCREMENT = 0.25
+SLOW_DOWN_FACTOR = 0.75  # Percent to slow down when number of enemies is increased
 INITIAL_SPEED_FACTOR = 1.0
 VELOCITY_PLAYER_MOVEMENT = 5
+
+# ENEMY INFORMATION
+INITIAL_NUM_ENEMIES = 4
+DEFAULT_ENEMY_INCREMENT = 1
+
+# DIFFICULTY INFORMATION
+TIME_UNTIL_SPEED_INCREASE = 60  # Seconds
+TIME_UNTIL_MORE_ENEMIES = 15  # Seconds
+
+# FONT INFORMATION
+FONT_8BIT = pygame_menu.font.FONT_8BIT
+FONT_COURIER_30 = pygame.font.SysFont("Courier", 30)
 
 # MENU INFORMATION
 MENU_FONT = pygame_menu.font.FONT_8BIT

@@ -1,5 +1,6 @@
 import pygame
 import constants as c
+from subscription import Subscriber
 
 # EventHandler inherits from Subject, to add the functionality of notifying
 # different game states (subscribers) about a key press for example.
@@ -16,7 +17,7 @@ from pygame.locals import (KEYDOWN,
                            K_p,)
 
 
-class EventHandler():
+class EventHandler:
     def __init__(self, controller):
         self.controller = controller
 

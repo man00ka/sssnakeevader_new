@@ -14,6 +14,8 @@ class Subject():
 
 
 class Subscriber(ABC):
+    def __init__(self, name: str):
+        self.name = name
     @abstractmethod
     def sendNotification(self, event):
         pass
@@ -22,5 +24,5 @@ class gamestate_sub(Subscriber):
     def __init__(self, name):
         self.name = name
 
-        
+
 

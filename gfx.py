@@ -1,7 +1,7 @@
 import pygame
 
 
-class GFX():
+class GFX:
     def __init__(self):
         self.layer_0 = pygame.sprite.Group()  # BG Tiles
         self.layer_1 = pygame.sprite.Group()  # Enemies

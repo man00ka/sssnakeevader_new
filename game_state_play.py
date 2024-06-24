@@ -25,11 +25,10 @@ class GameStatePlay(GameState):
         self.num_enemies = c.INITIAL_NUM_ENEMIES
         self._num_speed_increases = 0
         self.ingame_time = None
-        self.difficulty_manager = DifficultyManager(self)  # Needs the game state to modify the speed_factor
+        self.difficuelty_manager = DifficultyManager(self)  # Needs the game state to modify the speed_factor
 
         self.background = None
         self.player = None
-        self.enemies = None
         self.HUD = None
 
         self._init_background()
@@ -44,22 +43,22 @@ class GameStatePlay(GameState):
         return GameStatePlay.instance
 
     def update(self):
+        self._check_if_new_enemies_needed()
         self._update_ingame_clock()
-        self._update_enemies()
-        self._update_HUD()
-        super().update()  # This will update the background tiles
+        super().update()  # This will update the background tiles and enemies
 
     def _update_player(self):
         pass
 
-    def _update_enemies(self):
+    def _check_if_new_enemies_needed(self):
         # Enemies kill themselves if they go off-screen. However,
-        # we need to "refill" the enemies to `self.num_enemies`
-        while len(self.enemies) < self.num_enemies:
-            Enemy(speed_factor=self.speed_factor)
+        # we need to "refill" the enemies to match `self.num_enemies`
+        while len(self.gfx.layers_dict["Enemies"]) < self.num_enemies:
+            new_enemy = self._create_enemy()
+            self.gfx.add_to_layer("Enemies", new_enemy)
 
     def _update_HUD(self):
-        self.ingame_time.update()
+        pass
 
     def _init_background(self):
         bg_tile_image = self.controller.graphics_manager.grass_tile_image
@@ -87,16 +86,17 @@ class GameStatePlay(GameState):
         self.player = Player(image=player_image, pos_x=0, pos_y=c.DISPLAY_HEIGHT_CENTER)
         self.gfx.add_to_layer(layer_name="Player", sprites=self.player)
 
+    def _create_enemy(self):
+        image = self.controller.graphics_manager.enemy_image
+        return Enemy(image, self.speed_factor)
+
     def _init_enemies(self, num_enemies: int):
-        enemy_image = self.controller.graphics_manager.enemy_image
-        self.enemies = [Enemy(enemy_image,
-                              speed_factor=self.speed_factor)
-                        for _ in range(0, num_enemies)]
-        self.gfx.add_to_layer("Enemies", self.enemies)
+        enemies = [self._create_enemy() for _ in range(0, num_enemies)]
+        self.gfx.add_to_layer("Enemies", enemies)
 
     def _init_HUD(self):
-        # The y position is dynamically corrected by GameTime itself to accommodate
-        # for font type and font size etc.
+        # The y offset of the in-game timer sprite is dynamically accounted for
+        # by GameTime itself.
         self.ingame_time = GameTime(pos_x=c.DISPLAY_WIDTH_CENTER, pos_y=c.DISPLAY_TOP)
 
         # Since GameTime inherits from pygame.Sprite and defines a .surf and
@@ -132,7 +132,6 @@ class GameStatePlay(GameState):
         pass
 
     def _switch_to_game_state_pause(self):
-        # TODO: Switch current game state to Pause
         self.controller.current_state = (self.controller.game_states[c.STATE_PAUSE]
                                          .get_instance(self.controller))
 

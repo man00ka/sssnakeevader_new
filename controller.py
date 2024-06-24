@@ -17,11 +17,8 @@ class Controller():
             # Handle Events
             self.event_handler.handle_events()
 
-
-
             # Update State
             self.current_state.update()
-
 
             # Render State
             self.current_state.render(self.display)

@@ -6,6 +6,7 @@ from random import randint
 # from animation import AnimationGroup
 # from entity_state import EntityState()
 
+
 class DynamicEntity(StaticEntity):
     def __init__(self, *args, **kwargs):
         super(DynamicEntity, self).__init__(*args, **kwargs)
