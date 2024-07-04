@@ -1,7 +1,12 @@
 # sssnakeevader 🐍
-> "Evade the snakes like the happy dog you are!" – doggy van de bark 2024
+> "Evade the snakes like the happy dog you are!" – _Dog van de bark 2024_
 
 A small fun project to try out the pygame engine and learn about software design patterns.
+
+A **playable prototype** based on an older code base is available at itch.io:
+- https://man00ka.itch.io/sssnake-evader
+- Via python WASM using [pygbag](https://pypi.org/project/pygbag/)
+
 
 ## Dependencies
 - numpy==2.0.0
