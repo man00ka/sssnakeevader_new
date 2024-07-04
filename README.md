@@ -7,13 +7,14 @@ A **playable prototype** based on an older code base is available at itch.io:
 - https://man00ka.itch.io/sssnake-evader
 - Via python WASM using [pygbag](https://pypi.org/project/pygbag/)
 
+![img.png](img.png)
 
 ## Dependencies
 - numpy==2.0.0
 - pygame==2.5.2
 - pygame_ce==2.4.1
 - pygame_menu==4.4.3  # Will probably resort to custom menus later 
-- pyglet==1.5.27  # For future audio stuff. Might be replaced by fmod :-)
+- pyglet==1.5.27  # For future audio stuff. Might be replaced by [fmod](https://www.fmod.com/) :-)
 
 ## Short-term todos
 - Fix difficulty management (more snakes, faster pace)
