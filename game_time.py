@@ -20,7 +20,7 @@ class GameTime(Sprite):
         self._text = self._get_time_as_text(self.min, self.sec)
         self._text_size = None
         self.clock = Clock()  # Because Clock is set @final and should not be inherited from
-        self._sec_total = None
+        self.sec_total = None
         self.current_time = 0
 
     def update(self):
@@ -29,11 +29,11 @@ class GameTime(Sprite):
         """
         tick = self.clock.tick()
         self.current_time = self.current_time + tick
-        self._sec_total = self.current_time // 1000
-        self.min = self._sec_total // 60
+        self.sec_total = self.current_time // 1000
+        self.min = self.sec_total // 60
 
         # Correct the seconds by the minutes already counted
-        self.sec = self._sec_total - self.min * 60
+        self.sec = self.sec_total - self.min * 60
 
         self._text = self._get_time_as_text(self.min, self.sec)
         self._text_size = self.font.size(self._text)
