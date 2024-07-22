@@ -7,6 +7,7 @@ from static_entity import StaticEntity, BackgroundTile
 from dynamic_entity import DynamicEntity, Player, Enemy
 from game_time import GameTime
 from dificulty_manager import DifficultyManager
+from collision_manager import CollisionManager
 
 
 # TODO:
@@ -26,6 +27,7 @@ class GameStatePlay(GameState):
         self._num_speed_increases = 0
         self.ingame_time = None
         self.difficuelty_manager = DifficultyManager(self)  # Needs the game state to modify the speed_factor
+        self.collision_manager = CollisionManager(self)
 
         self.background = None
         self.player = None
@@ -46,6 +48,7 @@ class GameStatePlay(GameState):
         self._check_if_new_enemies_needed()
         self._update_ingame_clock()
         self._update_difficulty_manager()
+        self.collision_manager.update()
         super().update()  # This will update the background tiles and enemies
 
     def _update_player(self):
