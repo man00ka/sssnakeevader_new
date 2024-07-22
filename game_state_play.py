@@ -45,10 +45,17 @@ class GameStatePlay(GameState):
     def update(self):
         self._check_if_new_enemies_needed()
         self._update_ingame_clock()
+        self._update_difficulty_manager()
         super().update()  # This will update the background tiles and enemies
 
     def _update_player(self):
         pass
+
+    def _update_ingame_clock(self):
+        self.ingame_time.update()
+
+    def _update_difficulty_manager(self):
+        self.difficuelty_manager.update()
 
     def _check_if_new_enemies_needed(self):
         # Enemies kill themselves if they go off-screen. However,
@@ -135,8 +142,7 @@ class GameStatePlay(GameState):
         self.controller.current_state = (self.controller.game_states[c.STATE_PAUSE]
                                          .get_instance(self.controller))
 
-    def _update_ingame_clock(self):
-        self.ingame_time.update()
+
 
 def _get_num_bg_tiles(tile_size: tuple[int, int]):
     """Returns a tuple of the number of tiles in x and y
