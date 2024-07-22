@@ -1,55 +1,63 @@
 from pygame.time import Clock
 import constants as c
-
+from time import sleep
 
 class DifficultyManager:
     # TODO:
-    #  - remember old game time
-    #  - compare to current time
     #  - update game-time-events
     #  - update game time in game_state_play
     #  before updating difficulty Manager
     def __init__(self, game_state_play):
         self._game_state_play = game_state_play
         self._num_speed_increases = 0
-        self._enemy_timer = Clock()
-        self._speed_timer = Clock()
-
-        # self._ingame_time_current = game_state_play.ingame_time.get_time()
-        # self._ingame_time_previous = self._ingame_time_current
+        self._frames_passed = 0
+        self._GO_FASTER = False
+        self._MORE_ENEMIES = False
 
     def update(self):
         """This will check in every frame if enough in-game time has passed
         to trigger different events for increasing difficulty."""
-        self._enemy_timer.tick()
-        self._speed_timer.tick()
         self._check_for_timed_events()
+        self._frames_passed += 1
 
     def _check_for_timed_events(self):
         """This will check if enough time has passed for any timed event to
         trigger. It will take the appropriate action if so and also reset the
         event timers."""
-        MORE_ENEMIES = self._enemy_timer.get_time() // 1000 == c.TIME_UNTIL_MORE_ENEMIES
-        GO_FASTER = self._speed_timer.get_time() // 1000 == c.TIME_UNTIL_SPEED_INCREASE
 
-        if MORE_ENEMIES:
+        # Every `c.TIME_UNTIL_MORE_ENEMIES` seconds MORE_ENEMIES is reset to False
+
+        if self._game_state_play.ingame_time.sec_total > 0:
+            # We don't want to increase enemies or speed if the game time is still zero!
+
+            self._MORE_ENEMIES = (self._game_state_play
+                                  .ingame_time
+                                  .sec_total) % (c.TIME_UNTIL_MORE_ENEMIES) == 0
+            self._GO_FASTER = (self._game_state_play
+                               .ingame_time
+                               .sec_total) % (c.TIME_UNTIL_SPEED_INCREASE) == 0
+
+        # TODO: Make enemies spawn richtig
+        # TODO: git commit --ammend ausführen
+
+        TARGET_FPS_PASSED = self._frames_passed % c.FPS == 0
+
+        if self._MORE_ENEMIES and TARGET_FPS_PASSED:
             self._increase_enemies()
-            print(f"enemy_timer: {self._enemy_timer}")
-            self._enemy_timer = Clock()
-            print(f"enemy_timer: {self._enemy_timer}")
+            # print(f"{self._game_state_play.ingame_time._text} - MORE_ENEMIES")
 
-        if GO_FASTER:
+        if self._GO_FASTER and TARGET_FPS_PASSED and not self._MORE_ENEMIES:
             self._increase_speed()
-            print(f"speed_timer: {self._speed_timer}")
-            self._speed_timer = Clock()
-            print(f"speed_timer: {self._speed_timer}")
+            # print(f"{self._game_state_play.ingame_time._text} - GO_FASTER")
 
     def _increase_speed(self):
         """This will increment the velocity for new enemies (and the background).
         Existing enemies will stay on the same velocity for now."""
-        # TODO: Should we also increase the players velocity?
+        # TODO: Should we also increase the players velocity? --> nee!
         self._game_state_play.speed_factor += c.SPEED_INCREMENT
         self._num_speed_increases += 1
+        self._GO_FASTER = False
+
 
     def _increase_enemies(self):
         """This will increase the total number of enemies on the screen
@@ -58,6 +66,7 @@ class DifficultyManager:
         slow the game a bit down again."""
         self._game_state_play.num_enemies += c.DEFAULT_ENEMY_INCREMENT
         self._slow_back_down()
+        self._MORE_ENEMIES = False
 
     def _slow_back_down(self):
         """After we increased the number of enemies we want to slow the
