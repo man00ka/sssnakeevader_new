@@ -24,6 +24,9 @@ class GFX:
         layer = self.layers_dict[layer_name]
         layer.add(sprites)
 
+    def get_layer(self, name: str):
+        return self.layers_dict[name]
+
     def update(self):
         for layer in self.layers:
             layer.update()
