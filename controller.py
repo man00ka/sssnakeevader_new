@@ -1,6 +1,8 @@
 import constants as c
 from event_handler import EventHandler
-class Controller():
+
+
+class Controller:
     def __init__(self, display, graphics_manager, clock, game_states, starting_state):
         self.display = display
         self.graphics_manager = graphics_manager  # Rename to assets_manager?
