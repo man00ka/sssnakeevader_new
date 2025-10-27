@@ -1,0 +1,19 @@
+# Project Architecture
+
+This is a Python project using Pygame for game development.
+- Game states are defined in files like `game_state_*.py` and are stored in a dictionary named `game_states` in the `init.py` file.
+- Different game states extend the base class `GameState` (from `game_state.py`) and implement various methods related to the state of the game (like `on_key_press_*`, `_add_text_layer`, etc.).
+- The graphics are managed by the `GraphicsManager` class in the `graphicsmanager.py` file, which uses a dictionary to store sprites in different layers and groups them by name.
+- The `constants` module contains all the game constants (like display size, state names, etc.).
+- The project uses type annotations throughout the code to improve readability and ensure correct usage of functions.
+
+## Coding Standards
+- Use clear, meaningful variable and function names.
+- Follow the PEP8 style guide for Python code.
+- Write tests for new features and ensure they pass without error in all supported environments (OS, Pygame version, etc.).
+- Document the purpose and behavior of new functions/classes with comments.
+
+# External Dependencies
+Our graphics library is Pygame:
+- [Pygame documentation](https://www.pygame.org/docs/)
+- Pygame version: 2.x (check the latest on [Pypi](https://pypi.org/project/pygame/))
