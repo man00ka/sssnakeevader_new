@@ -38,6 +38,8 @@ class GameStatePlay(GameState):
         self._init_player()
         self._init_enemies(self.num_enemies)
         self._init_HUD()
+        if c.DRAW_HITBOXES:
+            self._init_hitbox_layer()
 
     @staticmethod
     def get_instance(*args, **kwargs):
@@ -67,6 +69,8 @@ class GameStatePlay(GameState):
         while len(self.gfx.layers_dict["Enemies"]) < self.num_enemies:
             new_enemy = self._create_enemy()
             self.gfx.add_to_layer("Enemies", new_enemy)
+            if c.DRAW_HITBOXES:
+                self.gfx.add_to_layer("Debug", new_enemy.hitbox)
 
     def _update_HUD(self):
         pass
@@ -115,6 +119,11 @@ class GameStatePlay(GameState):
         self.gfx.add_to_layer("HUD", self.ingame_time)
 
         # TODO: Add health bar
+
+    def _init_hitbox_layer(self):
+        self.gfx.add_to_layer("Debug", self.player.hitbox)  # .hitbox is an extra sprite containing a .rect
+        for enemy in self.enemies:
+            self.gfx.add_to_layer("Debug", enemy.hitbox)
 
     def on_key_press_W(self):
          self.player.go_up()

@@ -1,8 +1,9 @@
-import pygame
+from collision_manager import HitBox
 from static_entity import StaticEntity
-import ultracolors as colors
 import constants as c
 from random import randint
+
+
 # from animation import AnimationGroup
 # from entity_state import EntityState()
 
@@ -10,11 +11,13 @@ from random import randint
 class DynamicEntity(StaticEntity):
     def __init__(self, *args, **kwargs):
         super(DynamicEntity, self).__init__(*args, **kwargs)
+        self.hitbox = HitBox(rect=self.rect.scale_by(c.HITBOX_SCALING_FACTOR))
         # self.animation = AnimationGroup()
         # self.state = EntityState()
 
     def update(self, *args, **kwargs):
         self.update_position()  # inherited
+        self._update_hitbox()
         # self.update_state()
         # self.update_animation()  # not needed yet
 
@@ -24,10 +27,18 @@ class DynamicEntity(StaticEntity):
     def update_animation(self):
         pass
 
+    def _update_hitbox(self):
+        self.hitbox.rect.center = self.rect.center
+
 
 class Player(DynamicEntity):
     def __init__(self, *args, **kwargs):
         super(Player, self).__init__(*args, **kwargs)
+        self.fit_hitbox_color()
+
+    def fit_hitbox_color(self):
+        self.hitbox.color = c.HITBOX_COLOR_PLAYER  # self.hitbox wird in Superklasse initialisiert
+        self.hitbox.draw()
 
     def update_position(self):
         super().update_position()  # Updates movement introduced by velocity vectors
@@ -36,18 +47,22 @@ class Player(DynamicEntity):
     def go_up(self):
         self.pos_y -= c.VELOCITY_PLAYER_MOVEMENT
         self.rect.y -= c.VELOCITY_PLAYER_MOVEMENT
+        self._update_hitbox()
 
     def go_left(self):
         self.pos_x -= c.VELOCITY_PLAYER_MOVEMENT
         self.rect.x -= c.VELOCITY_PLAYER_MOVEMENT
+        self._update_hitbox()
 
     def go_down(self):
         self.pos_y += c.VELOCITY_PLAYER_MOVEMENT
         self.rect.y += c.VELOCITY_PLAYER_MOVEMENT
+        self._update_hitbox()
 
     def go_right(self):
         self.pos_x += c.VELOCITY_PLAYER_MOVEMENT
         self.rect.x += c.VELOCITY_PLAYER_MOVEMENT
+        self._update_hitbox()
 
     def _keep_player_on_screen(self):
         if self.pos_x < 0:
@@ -65,10 +80,15 @@ class Player(DynamicEntity):
 
 
 class Enemy(DynamicEntity):
-    def __init__(self, *args, speed_factor: float= 1.0, **kwargs):
+    def __init__(self, *args, speed_factor: float = 1.0, **kwargs):
         super(Enemy, self).__init__(*args, **kwargs)
         self.pos_x, self.pos_y = self._get_random_position()
         self.vel_x = self._get_random_velocity(speed_factor)
+        self.fit_hitbox_color()
+
+    def fit_hitbox_color(self):
+        self.hitbox.color = c.HITBOX_COLOR_ENEMY  # self.hitbox wird in Superklasse initialisiert
+        self.hitbox.draw()
 
     def update_position(self):
         super().update_position()
@@ -86,3 +106,4 @@ class Enemy(DynamicEntity):
         IS_OFF_SCREEN = self.rect.right < 0
         if IS_OFF_SCREEN:
             self.kill()
+            self.hitbox.kill()
