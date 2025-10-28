@@ -56,6 +56,12 @@ class Player(DynamicEntity):
         if self.pos_y < 0:
             self.pos_y = 0
             self.rect.y = 0
+        if self.pos_x > c.DISPLAY_RIGHT:
+            self.pos_y = c.DISPLAY_RIGHT
+            self.rect.y = c.DISPLAY_RIGHT
+        if self.pos_y > c.DISPLAY_BOTTOM:
+            self.pos_y = c.DISPLAY_BOTTOM
+            self.rect.y = c.DISPLAY_BOTTOM
 
 
 class Enemy(DynamicEntity):
