@@ -27,6 +27,5 @@ class GamestateSub(Subscriber):
     def send_notification(self, event):
         pass
 
-class gamestate_sub(Subscriber):
-    def __init__(self, name):
-        super().__init__(name)
+    def send_notification(self, event):
+        pass
