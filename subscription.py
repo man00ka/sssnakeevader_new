@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class Subject():
     def __init__(self, name):
         self.name = name
@@ -10,14 +11,20 @@ class Subject():
 
     def notify(self, event):
         for sub in self.subscribers:
-            sub.sendNotification(self.name, event)
+            sub.send_notification(self.name, event)
 
 
 class Subscriber(ABC):
     def __init__(self, name: str):
         self.name = name
+
     @abstractmethod
-    def sendNotification(self, event):
+    def send_notification(self, event):
+        pass
+
+
+class GamestateSub(Subscriber):
+    def send_notification(self, event):
         pass
 
 class gamestate_sub(Subscriber):
