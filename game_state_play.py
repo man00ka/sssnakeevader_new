@@ -31,6 +31,7 @@ class GameStatePlay(GameState):
 
         self.background = None
         self.player = None
+        self.enemies = None
         self.HUD = None
 
         self._init_background()
@@ -101,8 +102,8 @@ class GameStatePlay(GameState):
         return Enemy(image, self.speed_factor)
 
     def _init_enemies(self, num_enemies: int):
-        enemies = [self._create_enemy() for _ in range(0, num_enemies)]
-        self.gfx.add_to_layer("Enemies", enemies)
+        self.enemies = [self._create_enemy() for _ in range(0, num_enemies)]
+        self.gfx.add_to_layer("Enemies", self.enemies)
 
     def _init_HUD(self):
         # The y offset of the in-game timer sprite is dynamically accounted for
