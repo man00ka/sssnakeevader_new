@@ -1,6 +1,7 @@
 # SCALING AND FPS
 import pygame
 import pygame_menu
+import ultracolors as uc
 
 pygame.font.init()
 
@@ -79,6 +80,13 @@ SPEED_INCREMENT = 0.25
 SLOW_DOWN_FACTOR = 0.75  # Percent to slow down when number of enemies is increased
 INITIAL_SPEED_FACTOR = 1.0
 VELOCITY_PLAYER_MOVEMENT = 5
+
+# HITBOX INFORMATION
+HITBOX_SCALING_FACTOR = 0.75  # The factor which the rect of a given sprite will be scaled by to form the hitbox
+DRAW_HITBOXES = True
+HITBOX_COLOR_PLAYER = uc.GREEN
+HITBOX_COLOR_ENEMY = uc.PINK_1
+
 
 # ENEMY INFORMATION
 INITIAL_NUM_ENEMIES = 4

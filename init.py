@@ -9,13 +9,16 @@ from graphicsmanager import GraphicsManager
 
 pygame.init()
 
+
 def get_display():
     display = pygame.display.set_mode(c.DISPLAY_SIZE)  # Try parameter 'vsync=1' some time.
     return display
 
+
 def get_graphics_manager():
     graphics_manager = GraphicsManager()
     return graphics_manager
+
 
 def get_clock():
     clock = pygame.time.Clock()
@@ -31,6 +34,7 @@ def get_game_states():
         c.STATE_PAUSE: GameStatePause
     }
     return game_states
+
 
 def get_controller(display, graphics_manager, clock, game_states, starting_state):
     controller = Controller(display, graphics_manager, clock, game_states, starting_state)

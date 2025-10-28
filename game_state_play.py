@@ -7,6 +7,7 @@ from static_entity import StaticEntity, BackgroundTile
 from dynamic_entity import DynamicEntity, Player, Enemy
 from game_time import GameTime
 from dificulty_manager import DifficultyManager
+from collision_manager import CollisionManager
 
 
 # TODO:
@@ -26,15 +27,19 @@ class GameStatePlay(GameState):
         self._num_speed_increases = 0
         self.ingame_time = None
         self.difficuelty_manager = DifficultyManager(self)  # Needs the game state to modify the speed_factor
+        self.collision_manager = CollisionManager(self)
 
         self.background = None
         self.player = None
+        self.enemies = None
         self.HUD = None
 
         self._init_background()
         self._init_player()
         self._init_enemies(self.num_enemies)
         self._init_HUD()
+        if c.DRAW_HITBOXES:
+            self._init_hitbox_layer()
 
     @staticmethod
     def get_instance(*args, **kwargs):
@@ -46,6 +51,7 @@ class GameStatePlay(GameState):
         self._check_if_new_enemies_needed()
         self._update_ingame_clock()
         self._update_difficulty_manager()
+        self.collision_manager.update()
         super().update()  # This will update the background tiles and enemies
 
     def _update_player(self):
@@ -63,6 +69,8 @@ class GameStatePlay(GameState):
         while len(self.gfx.layers_dict["Enemies"]) < self.num_enemies:
             new_enemy = self._create_enemy()
             self.gfx.add_to_layer("Enemies", new_enemy)
+            if c.DRAW_HITBOXES:
+                self.gfx.add_to_layer("Debug", new_enemy.hitbox)
 
     def _update_HUD(self):
         pass
@@ -98,8 +106,8 @@ class GameStatePlay(GameState):
         return Enemy(image, self.speed_factor)
 
     def _init_enemies(self, num_enemies: int):
-        enemies = [self._create_enemy() for _ in range(0, num_enemies)]
-        self.gfx.add_to_layer("Enemies", enemies)
+        self.enemies = [self._create_enemy() for _ in range(0, num_enemies)]
+        self.gfx.add_to_layer("Enemies", self.enemies)
 
     def _init_HUD(self):
         # The y offset of the in-game timer sprite is dynamically accounted for
@@ -111,6 +119,11 @@ class GameStatePlay(GameState):
         self.gfx.add_to_layer("HUD", self.ingame_time)
 
         # TODO: Add health bar
+
+    def _init_hitbox_layer(self):
+        self.gfx.add_to_layer("Debug", self.player.hitbox)  # .hitbox is an extra sprite containing a .rect
+        for enemy in self.enemies:
+            self.gfx.add_to_layer("Debug", enemy.hitbox)
 
     def on_key_press_W(self):
          self.player.go_up()

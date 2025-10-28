@@ -21,7 +21,7 @@ class MainMenu(pygame_menu.Menu, GameState):
                                       onchange=self.set_difficulty
                                       )
 
-    def update(self):
+    def update(self, **kwargs):
         # Implemented by pygame_menu.Menu
         pass
 
