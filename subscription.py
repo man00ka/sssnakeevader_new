@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Subject():
+class Subject:
     def __init__(self, name):
         self.name = name
         self.subscribers = []
@@ -23,9 +23,9 @@ class Subscriber(ABC):
         pass
 
 
-class GamestateSub(Subscriber):
-    def send_notification(self, event):
-        pass
+class GameStateSub(Subscriber):
+    def __init__(self, name):
+        super().__init__(name)
 
     def send_notification(self, event):
         pass
