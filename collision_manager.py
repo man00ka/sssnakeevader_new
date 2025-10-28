@@ -22,4 +22,6 @@ class CollisionManager:
         if collided_sprite:
             print("collision")
             pygame.quit()
-            # TODO: Transition to game over screen
+            quit()
+            # TODO: Decrease health instead of quitting
+            # TODO: Transition to game over screen if health = 0
