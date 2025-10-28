@@ -82,7 +82,7 @@ INITIAL_SPEED_FACTOR = 1.0
 VELOCITY_PLAYER_MOVEMENT = 5
 
 # HITBOX INFORMATION
-HITBOX_SCALING_FACTOR = 0.7  # The factor which the rect of a given sprite will be scaled by to form the hitbox
+HITBOX_SCALING_FACTOR = 0.75  # The factor which the rect of a given sprite will be scaled by to form the hitbox
 DRAW_HITBOXES = True
 HITBOX_COLOR_PLAYER = uc.GREEN
 HITBOX_COLOR_ENEMY = uc.PINK_1
